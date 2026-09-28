@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Soyeon Lim Design Studio — Brand Design &amp; Visual Design</title>
+<meta name="description" content="Soyeon Lim is a Korea based Brand Designer working across branding, visual identity, and visual design." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#111111;
+  --grey:#767676;
+  --grey-light:#B5B5B5;
+  --hairline:#DEDEDE;
+  --placeholder:#EDEDED;
+  --white:#FFFFFF;
+
+  /* page margin = 49/2940 of the width, same as the reference (left = right = top = bottom) */
+  --pad:max(14px, 1.667vw);
+  --maxw:none;
+  --nav-col:clamp(170px,17vw,240px);
+
+  --fs-display:clamp(27px, 5.4vw, 64px);
+  --fs-statement:clamp(21px, 3.4vw, 40px);
+  --fs-lg:clamp(17px, 1.7vw, 24px);
+  --fs-md:clamp(15px, 1.05vw, 17px);
+  --fs-body:clamp(14px, 0.95vw, 16px);
+  --fs-sm:clamp(12px, 0.8vw, 13px);
+
+  /* home rhythm: the empty space between the header text and the Studio row,
+     reused between that row and the intro, and between the intro and the list */
+  --hdr-pb:clamp(14px,1.8vw,22px);
+  --home-gap:max(calc(24px + var(--hdr-pb)), calc(9.73vw - var(--fs-sm) * 1.45));
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  background:var(--white);
+  color:var(--black);
+  font-family:"Inter","Helvetica Neue",Helvetica,Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:var(--fs-body);
+  font-weight:400;
+  line-height:1.45;
+  letter-spacing:-0.011em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+::selection{background:var(--black);color:var(--white);}
+:focus-visible{outline:1px solid var(--black);outline-offset:3px;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);}
+
+/* ---------- header ---------- */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:var(--white);
+  /* cap height of the header text sits exactly --pad from the top edge */
+  padding-top:calc(var(--pad) - var(--fs-sm) * 0.28);
+  padding-bottom:var(--hdr-pb);
+}
+.header .wrap{display:grid;grid-template-columns:1fr 1fr 1fr;column-gap:0;align-items:center;}
+.header .brand{grid-column:1;}
+.header .nav{grid-column:2 / 4;display:grid;grid-template-columns:1fr 1fr;align-items:center;}
+.header .nav a:first-child{justify-self:center;}
+.header .nav a:last-child{justify-self:end;}
+.brand,.nav{font-size:var(--fs-sm);font-weight:700;letter-spacing:-0.011em;line-height:1.45;}
+.brand{display:block;justify-self:start;color:var(--black);}
+.nav a{color:var(--black);transition:color .2s ease;}
+.nav a:hover{color:var(--grey);}
+.nav a.is-active{color:var(--black);}
+
+/* ---------- page ---------- */
+.page{display:none;}
+.page.is-active{display:block;}
+main{padding-bottom:clamp(80px,10vw,160px);}
+
+.meta-row{
+  display:grid;
+  /* first column ends exactly where the "Projects" label starts (set by JS) */
+  grid-template-columns:var(--contact-x, calc(50% - 26px)) 1fr;
+  column-gap:0;
+  /* header line → Studio line = 9.73vw (same ratio as the reference);
+     subtract the header's own line box + bottom padding */
+  padding:calc(var(--home-gap) - var(--hdr-pb)) 0 var(--home-gap);
+}
+/* left half: Studio at the edge, Selected work centred in the gap before Contact */
+.meta-row .meta-left{grid-column:1;display:flex;align-items:flex-start;}
+.meta-row .meta-left .mid{flex:1;display:flex;justify-content:center;}
+.meta-row .col.contact{grid-column:2;text-align:left;}
+.meta-row .col{font-size:var(--fs-sm);color:var(--black);line-height:1.5;letter-spacing:-0.011em;}
+.meta-row .col strong{display:block;font-weight:400;color:var(--black);}
+.meta-row .col a{color:var(--black);transition:color .2s ease;}
+.meta-row .col a:hover{color:var(--grey);}
+.meta-spacer{height:clamp(70px,11vw,200px);}
+
+h1.display{
+  font-size:var(--fs-statement);
+  font-weight:400;
+  line-height:1.16;
+  letter-spacing:-0.011em;
+}
+.statement{
+  font-size:var(--fs-statement);
+  font-weight:400;
+  line-height:1.16;
+  letter-spacing:-0.011em;
+}
+.section-space{height:clamp(48px,8vw,120px);}
+.section-space.sm{height:clamp(32px,5vw,72px);}
+
+/* ---------- image placeholder ---------- */
+.ph{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  background:var(--placeholder);
+}
+.media{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  background:var(--placeholder);
+  overflow:hidden;
+}
+.media img{width:100%;height:100%;object-fit:cover;}
+.ph::after{
+  content:attr(data-label);
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;letter-spacing:-0.011em;text-transform:uppercase;
+  color:var(--grey-light);
+}
+
+/* ---------- home index list ---------- */
+.label{
+  font-size:var(--fs-sm);color:var(--grey);letter-spacing:-0.011em;
+  padding-bottom:clamp(14px,1.6vw,20px);
+}
+.index-list{}
+.home-gap{height:calc(var(--home-gap) - clamp(14px,1.6vw,20px));}
+.index-row{
+  display:block;
+  border-bottom:1px solid var(--hairline);
+  padding:clamp(14px,1.6vw,20px) 0;
+  font-size:var(--fs-sm);
+  line-height:1.5;
+  letter-spacing:-0.011em;
+  transition:padding-left .3s cubic-bezier(.2,.6,.2,1);
+}
+.index-row .mark{color:var(--grey-light);margin-right:0.55em;transition:color .25s ease;}
+.index-row .desc{color:var(--grey);transition:color .25s ease;}
+.index-row:last-child{border-bottom:none;padding-bottom:0;}
+/* last project → footer line = same home gap (cancels main's bottom padding) */
+#home-index{margin-bottom:calc(var(--home-gap) - clamp(80px,10vw,160px));}
+.index-row:hover{padding-left:clamp(8px,1vw,16px);}
+.index-row:hover .mark,.index-row:hover .desc{color:var(--black);}
+
+/* ---------- projects grid ---------- */
+.grid{
+  display:grid;
+  /* [small] gap [ middle ] gap [small]
+     large image = exactly the home image (starts at the "Projects" line, ends at the right margin);
+     gap between small and large = --home-gap */
+  /* = the VISIBLE home gap: bottom of the "Brand Design & Visual Design" letters
+     → top of the "Hello" capitals (line-box gap + Inter descender / cap-height offsets), turned sideways */
+  --pgap:calc(var(--home-gap) + var(--fs-sm) * 0.177 + clamp(20px,2.25vw,40px) * 0.216);
+  grid-template-columns:
+    calc(var(--contact-x, calc(50% - 26px)) - var(--pgap))
+    var(--pgap)
+    1fr
+    var(--pgap)
+    calc(var(--contact-x, calc(50% - 26px)) - var(--pgap));
+  column-gap:0;
+  row-gap:clamp(48px,7vw,120px);
+}
+.card{display:block;}
+/* alternating large / small, left / right — Christopher Doyle grid */
+.card:nth-child(4n+1){grid-column:1 / 2;}
+.card:nth-child(4n+2){grid-column:3 / 6;}
+.card:nth-child(4n+3){grid-column:1 / 4;}
+.card:nth-child(4n+4){grid-column:5 / 6;}
+.card .ph{aspect-ratio:1402 / 789;transition:opacity .3s ease;border-radius:var(--img-r, 5px);overflow:hidden;}
+.card:hover .ph{opacity:0.72;}
+.card-text{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  column-gap:0;
+  row-gap:2px;
+  padding-top:clamp(8px,0.7vw,12px);
+}
+.card-title{grid-column:1 / span 5;font-size:var(--fs-sm);font-weight:400;letter-spacing:-0.011em;line-height:1.5;color:var(--black);} /* same as home "Contact" */
+.card-desc{grid-column:6 / span 7;font-size:var(--fs-sm);letter-spacing:-0.011em;line-height:1.5;color:var(--grey);}
+
+/* ---------- information (Profile) ---------- */
+/* body column starts exactly where the "Projects" label starts;
+   type and rules match the home project list (.index-row) */
+.split{
+  display:grid;
+  grid-template-columns:var(--contact-x, calc(50% - 26px)) 1fr;
+  column-gap:0;
+}
+.split .side{grid-column:1;}
+.split .body,.split .body.narrow{grid-column:2;}
+.side-label{
+  font-size:var(--fs-sm);color:var(--black);letter-spacing:-0.011em;line-height:1.5;
+  padding-top:clamp(14px,1.6vw,20px);
+}
+.list-lines li{
+  list-style:none;
+  border-bottom:1px solid var(--hairline);
+  padding:clamp(14px,1.6vw,20px) 0;
+  font-size:var(--fs-sm);
+  letter-spacing:-0.011em;
+  line-height:1.5;
+  color:var(--black);
+}
+.list-lines li:last-child{border-bottom:none;}
+.cta-row{padding:clamp(14px,1.6vw,20px) 0;}
+.cta{
+  display:inline-block;vertical-align:top;
+  font-size:var(--fs-sm);font-weight:700;line-height:1.5;letter-spacing:-0.011em; /* same as header "Projects" */
+  color:var(--black);
+  transition:color .2s ease;
+}
+.cta:hover{color:var(--grey);}
+.def{
+  display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(16px,2vw,32px);
+  padding:clamp(14px,1.6vw,20px) 0;
+  border-bottom:1px solid var(--hairline);
+}
+.split .body .def:last-child{border-bottom:none;}
+.def dt{grid-column:span 3;font-size:var(--fs-sm);color:var(--grey);letter-spacing:-0.011em;line-height:1.5;}
+.def dd{grid-column:4 / -1;font-size:var(--fs-sm);color:var(--black);letter-spacing:-0.011em;line-height:1.5;}
+.def dd span{display:block;}
+.def dd a{transition:color .2s ease;}
+.def dd a:hover{color:var(--grey);}
+
+/* ---------- footer ---------- */
+.footer{
+  border-top:1px solid var(--hairline);
+  padding:clamp(24px,3vw,40px) 0 calc(var(--pad) - 4px);
+}
+.footer .wrap{display:grid;grid-template-columns:var(--contact-x, calc(50% - 26px)) 1fr;column-gap:0;}
+.footer .col{font-size:var(--fs-sm);color:var(--grey);line-height:1.6;}
+.footer .col:nth-child(1){grid-column:1;}
+.footer .col:nth-child(2){grid-column:2;}
+.footer .col a{color:var(--grey);transition:color .2s ease;}
+.footer .col a:hover{color:var(--black);}
+
+/* ---------- home intro ---------- */
+.intro{
+  display:grid;
+  /* image column starts exactly where the "Projects" label starts */
+  grid-template-columns:var(--contact-x, calc(50% - 26px)) 1fr;
+  column-gap:0;
+  align-items:start;
+}
+.intro h1.display{font-size:clamp(20px,2.25vw,40px);color:var(--grey);letter-spacing:-0.028em;padding-right:clamp(16px,2vw,32px);}
+.intro h1.display em{font-style:normal;color:var(--black);}
+.intro{container-type:inline-size;}
+/* corner radius = 11 / 1402 of the image width, same as the reference */
+.intro .ph{aspect-ratio:1402 / 789;background:#BDBDBD;overflow:hidden;
+  border-radius:var(--img-r, 5px);}
+.intro .ph::after{color:#8f8f8f;}
+
+/* ---------- project case study board ---------- */
+.proj-head{margin-bottom:clamp(28px,4vw,56px);}
+/* project detail images (original files, not re-compressed) */
+.proj-body{border-radius:var(--img-r, 5px);overflow:hidden;}
+.proj-body img{display:block;width:100%;height:auto;}
+.proj-video{display:block;width:100%;aspect-ratio:16 / 9;background:#0b0b0b;}
+.proj-video iframe{display:block;width:100%;height:100%;border:0;}
+.proj-back{display:inline-block;font-size:13px;color:var(--muted);margin-bottom:clamp(18px,2.4vw,30px);}
+.proj-back:hover{color:var(--ink);}
+/* same font, size, tracking and line-height as the home intro sentence, in Bold (700) */
+.proj-title{font-family:inherit;font-size:clamp(20px,2.25vw,40px);font-weight:700;letter-spacing:-0.028em;line-height:1.16;margin:0 0 10px;}
+.proj-meta{font-size:13px;color:var(--muted);}
+.board{
+  container-type:inline-size;
+  max-width:1384px;            /* the board's native width — never upscaled */
+  margin:0 auto;
+  border-radius:clamp(9px,1.35vw,22px);
+  overflow:hidden;
+  background:#0a0a0a;
+}
+.board-img{display:block;width:100%;height:auto;}
+.board-text{
+  background:var(--bg,#0a0a0a);
+  padding:var(--pt,6%) 0 var(--pb,7%);
+}
+.board-text h3{
+  margin:0 0 2.46cqw;
+  margin-left:25.29cqw;
+  width:48.4cqw;
+  font-size:max(13px,1.12cqw);
+  font-weight:700;
+  line-height:1.5;
+  color:#fff;
+  letter-spacing:-0.011em;
+}
+.board-text p{
+  margin:0 0 1.9cqw;
+  margin-left:25.29cqw;
+  width:48.4cqw;
+  font-size:max(12.5px,1.084cqw);
+  line-height:1.74;
+  color:rgba(255,255,255,0.88);
+}
+.board-text p:last-child{margin-bottom:0;}
+@media (max-width:760px){
+  .board-text{padding:34px 0 38px;}
+  .board-text h3,.board-text p{margin-left:8%;width:84%;}
+  .board-text h3{font-size:14px;margin-bottom:12px;}
+  .board-text p{font-size:13px;line-height:1.72;margin-bottom:10px;}
+}
+
+.board.is-light{background:#fff;}
+.board-text.is-light p{color:rgba(17,17,17,0.88);}
+.board-text.is-light h4{color:#111;}
+.board-text h4{
+  margin:0 0 0.6cqw;margin-left:25.29cqw;width:48.4cqw;
+  font-size:max(12.5px,1.084cqw);font-weight:700;line-height:1.6;color:#fff;
+}
+.board-text h3+h4{margin-top:1.2cqw;}
+.board-text p+h4{margin-top:2cqw;}
+@media (max-width:760px){
+  .board-text h4{margin-left:8%;width:84%;font-size:13px;margin-bottom:6px;}
+}
+
+/* ---------- motion ---------- */
+.rise{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.6,.2,1);}
+.rise.in{opacity:1;transform:none;}
+
+/* ---------- mobile ---------- */
+@media (max-width:900px){
+  .meta-row{display:flex;flex-direction:column;gap:14px;}
+  .meta-row .meta-left{display:flex;flex-direction:column;gap:14px;}
+  .meta-row .meta-left .mid{justify-content:flex-start;}
+  .meta-row .col.contact{text-align:left;}
+  .intro{grid-template-columns:1fr;row-gap:clamp(28px,6vw,48px);}
+  .grid{grid-template-columns:1fr;row-gap:44px;}
+  .grid .card{grid-column:1 / -1;}
+  .split{display:block;}
+  .split .side{padding-bottom:0;}
+  .def dt{grid-column:1 / -1;padding-bottom:2px;}
+  .def dd{grid-column:1 / -1;}
+}
+@media (max-width:640px){
+  :root{--fs-lg:17px;}
+  .card-title{grid-column:1 / -1;}
+  .card-desc{grid-column:1 / -1;}
+  .lb{display:none;}
+  h1.display{max-width:none;}
+  .statement{max-width:none;}
+  .footer .wrap{display:flex;flex-direction:column;gap:20px;}
+  .index-row:hover{padding-left:0;}
+  .index-row .desc{display:block;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important;}
+  .rise{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="#/">SOYEON LIM</a>
+    <nav class="nav">
+      <a href="#/projects" data-nav="/projects">Projects</a>
+      <a href="#/information" data-nav="/information">Profile</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="page" id="page-/">
+  <div class="wrap">
+
+    <div class="meta-row">
+      <div class="meta-left">
+        <div class="col"><strong>Soyeon Lim Design Studio</strong>Brand Design &amp; Visual Design</div>
+        <div class="mid"><div class="col"><strong>Selected work</strong>2023 — 2026</div></div>
+      </div>
+      <div class="col contact"><strong>Contact</strong><a href="mailto:soyeonlim.work@gmail.com">soyeonlim.work@gmail.com</a></div>
+    </div>
+
+    <div class="intro rise">
+      <h1 class="display">Hello, I’m <em>Soyeon Lim</em>, <br class="lb">a <em>Brand Designer</em> based <br class="lb">between Korea and Australia. <br class="lb">I specialize in <em>branding</em> <br class="lb">and <em>visual design</em>, creating <br class="lb">thoughtful visual experiences <br class="lb">for brands and businesses.</h1>
+      <div class="ph"><img src="images-1/home-01.jpg" alt="Kakaobank Buddy Buddy Kit" width="2838" height="1599" decoding="async" style="width:100%;height:100%;object-fit:cover;" /></div>
+    </div>
+
+    <div class="home-gap"></div>
+
+    <div class="rise">
+      <div class="index-list" id="home-index"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="page" id="page-/projects">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="grid" id="project-grid"></div>
+  </div>
+</section>
+
+<!-- ============ PROJECT: BRICKLOCK ============ -->
+<section class="page" id="page-/projects/bricklock">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Bricklock</h2>
+      <div class="proj-meta">2025, BI, Package Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/bricklock-01.jpg" alt="Brocklock 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/bricklock-02.jpg" alt="Brocklock 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/bricklock-03.jpg" alt="Brocklock 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/bricklock-04.jpg" alt="Brocklock 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/bricklock-05.jpg" alt="Brocklock 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/bricklock-06.jpg" alt="Brocklock 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/bricklock-07.jpg" alt="Brocklock 7" width="2800" height="1781" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/kakaobank-interviewer-kit">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Kakaobank Interviewer Kit</h2>
+      <div class="proj-meta">2026, Package, Editorial Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-2/kakaobank-interviewer-kit-01.jpg" alt="Kakaobank Interviewer Kit" width="2416" height="8000" decoding="async" />
+      <img src="images-2/kakaobank-interviewer-kit-02.jpg" alt="Kakaobank Interviewer Kit 1" width="2800" height="2400" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-interviewer-kit-03.jpg" alt="Kakaobank Interviewer Kit 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-interviewer-kit-04.jpg" alt="Kakaobank Interviewer Kit 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-interviewer-kit-05.jpg" alt="Kakaobank Interviewer Kit 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-interviewer-kit-06.jpg" alt="Kakaobank Interviewer Kit 5" width="2800" height="1854" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/kakaobank-buddy-buddy-kit">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Kakaobank Buddy Buddy Kit</h2>
+      <div class="proj-meta">2026, Package, Editorial Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/kakaobank-buddy-buddy-kit-01.jpg" alt="Kakaobank Buddy Buddy Kit 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/kakaobank-buddy-buddy-kit-02.jpg" alt="Kakaobank Buddy Buddy Kit 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/kakaobank-buddy-buddy-kit-03.jpg" alt="Kakaobank Buddy Buddy Kit 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/kakaobank-buddy-buddy-kit-04.jpg" alt="Kakaobank Buddy Buddy Kit 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-buddy-buddy-kit-05.jpg" alt="Kakaobank Buddy Buddy Kit 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/kakaobank-buddy-buddy-kit-06.jpg" alt="Kakaobank Buddy Buddy Kit 6" width="2800" height="2301" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/lucky-express">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Lucky Express</h2>
+      <div class="proj-meta">2025, Branding, Character Design, Product Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-2/lucky-express-01.jpg" alt="Lucky Express 1" width="2800" height="2400" decoding="async" />
+      <img src="images-2/lucky-express-02.jpg" alt="Lucky Express 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-03.jpg" alt="Lucky Express 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-04.jpg" alt="Lucky Express 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-05.jpg" alt="Lucky Express 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-06.jpg" alt="Lucky Express 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-07.jpg" alt="Lucky Express 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-08.jpg" alt="Lucky Express 8" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-09.jpg" alt="Lucky Express 9" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/lucky-express-10.jpg" alt="Lucky Express 10" width="2800" height="1199" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/green-light">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Green Light</h2>
+      <div class="proj-meta">2023, Campaign Branding BI, Editorial Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/green-light-01.jpg" alt="Green Light 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/green-light-02.jpg" alt="Green Light 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-03.jpg" alt="Green Light 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-04.jpg" alt="Green Light 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-05.jpg" alt="Green Light 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-06.jpg" alt="Green Light 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-07.jpg" alt="Green Light 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-08.jpg" alt="Green Light 8" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-09.jpg" alt="Green Light 9" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-10.jpg" alt="Green Light 10" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/green-light-11.jpg" alt="Green Light 11" width="2800" height="693" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/kakaobank-aa-day">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Kakaobank AA Day Intro Video</h2>
+      <div class="proj-meta">2026, Motion Design</div>
+    </div>
+    <!-- project content goes here -->
+  </div>
+</section>
+
+<section class="page" id="page-/projects/clothing-for-the-earth">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Clothing for the earth</h2>
+      <div class="proj-meta">2024, 3D Motion Graphic Design, Speculative Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/clothing-for-the-earth-01.jpg" alt="Clothing for the earth 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/clothing-for-the-earth-02.jpg" alt="Clothing for the earth 2" width="2800" height="1106" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <div class="proj-video"><iframe src="https://www.youtube-nocookie.com/embed/bMfkI_xTsos?rel=0&amp;playsinline=1" title="Clothing for the Earth" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+      <img src="images-1/clothing-for-the-earth-03.jpg" alt="Clothing for the earth" width="1834" height="8000" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/hana-financial-group">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Hana Financial Group Contents Design</h2>
+      <div class="proj-meta">2024, Contents Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/hana-financial-group-01.jpg" alt="Hanafn" width="2342" height="8000" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/olympicar-2090">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Olympicar 2090</h2>
+      <div class="proj-meta">2024, Exhibition Branding, Editorial Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-2/olympicar-2090-01.jpg" alt="Olympica 2090 1" width="2800" height="2400" decoding="async" />
+      <img src="images-2/olympicar-2090-02.jpg" alt="Olympica 2090 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-03.jpg" alt="Olympica 2090 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-04.jpg" alt="Olympica 2090 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-05.jpg" alt="Olympica 2090 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-06.jpg" alt="Olympica 2090 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-07.jpg" alt="Olympica 2090 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-08.jpg" alt="Olympica 2090 8" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-09.jpg" alt="Olympica 2090 9" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/olympicar-2090-10.jpg" alt="Olympica 2090 10" width="2800" height="754" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/climate-refugees">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">The Land of Climate Refugees</h2>
+      <div class="proj-meta">2024, Package Design, Editorial Design, Speculative Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/climate-refugees-01.jpg" alt="The Land of Climate Refugees 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/climate-refugees-02.jpg" alt="The Land of Climate Refugees 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-03.jpg" alt="The Land of Climate Refugees 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-04.jpg" alt="The Land of Climate Refugees 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-05.jpg" alt="The Land of Climate Refugees 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-06.jpg" alt="The Land of Climate Refugees 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-07.jpg" alt="The Land of Climate Refugees 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-08.jpg" alt="The Land of Climate Refugees 8" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/climate-refugees-09.jpg" alt="The Land of Climate Refugees 9" width="2800" height="1706" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/nura">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Nura</h2>
+      <div class="proj-meta">2026, Branding, Product Design, Package Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-2/nura-01.jpg" alt="Nura 1" width="2800" height="2400" decoding="async" />
+      <img src="images-2/nura-02.jpg" alt="Nura 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-03.jpg" alt="Nura 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-04.jpg" alt="Nura 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-05.jpg" alt="Nura 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-06.jpg" alt="Nura 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-07.jpg" alt="Nura 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-08.jpg" alt="Nura 8" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-2/nura-09.jpg" alt="Nura 9" width="2800" height="1478" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/brickglo">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Brickglo</h2>
+      <div class="proj-meta">2025, Photo Direction</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/brickglo-01.jpg" alt="Brickglo 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/brickglo-02.jpg" alt="Brickglo 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/brickglo-03.jpg" alt="Brickglo 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/brickglo-04.jpg" alt="Brickglo 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/brickglo-05.jpg" alt="Brickglo 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/brickglo-06.jpg" alt="Brickglo 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/brickglo-07.jpg" alt="Brickglo 7" width="2800" height="436" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/projects/frante">
+  <div class="wrap">
+    <div class="meta-spacer"></div>
+    <div class="proj-head">
+      <h2 class="proj-title">Frante Contents Design Zip</h2>
+      <div class="proj-meta">2025, Contents Design</div>
+    </div>
+    <div class="proj-body">
+      <img src="images-1/frante-01.jpg" alt="Frante 1" width="2800" height="2400" decoding="async" />
+      <img src="images-1/frante-02.jpg" alt="Frante 2" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-03.jpg" alt="Frante 3" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-04.jpg" alt="Frante 4" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-05.jpg" alt="Frante 5" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-06.jpg" alt="Frante 6" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-07.jpg" alt="Frante 7" width="2800" height="2402" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+      <img src="images-1/frante-08.jpg" alt="Frante 8" width="2800" height="867" style="margin-top:calc(-2 / 2800 * 100%)" loading="lazy" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-/information">
+  <div class="wrap">
+
+    <div class="meta-spacer"></div>
+
+    <div class="split rise">
+      <div class="side"><div class="side-label">How we work</div></div>
+      <div class="body">
+        <!-- TODO: replace href="#" with the project inquiry link -->
+        <div class="cta-row"><a class="cta" href="#" data-cta="start-project">Start a project</a></div>
+        <ul class="list-lines">
+          <li>01 Inquiry</li>
+          <li>02 Proposal</li>
+          <li>03 Contract</li>
+          <li>04 Design</li>
+          <li>05 Feedback &amp; Revision</li>
+          <li>06 Final Delivery</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-space"></div>
+
+    <div class="split rise">
+      <div class="side"><div class="side-label">What I do</div></div>
+      <div class="body narrow">
+        <ul class="list-lines">
+          <li>Brand Visual Identity Design</li>
+          <li>Editorial Design</li>
+          <li>Content Design</li>
+          <li>Campaigns Design</li>
+          <li>Motion Design</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-space"></div>
+
+    <div class="split rise">
+      <div class="side"><div class="side-label">Profile</div></div>
+      <div class="body">
+        <dl class="def">
+          <dt>Name</dt>
+          <dd>Soyeon Lim</dd>
+        </dl>
+        <dl class="def">
+          <dt>Role</dt>
+          <dd>Brand Designer</dd>
+        </dl>
+        <dl class="def">
+          <dt>Education</dt>
+          <dd>2021, Design Convergences, Bachelor of Arts, Hongik University, The South Korea</dd>
+        </dl>
+        <dl class="def">
+          <dt>Awards</dt>
+          <dd>
+            <span>2026, K Design Award, Gold Winner</span>
+            <span>2026, Asia Design Prize, Gold Winner</span>
+            <span>2025, Korea International Design Award, Silver Winner</span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="section-space"></div>
+
+    <div class="split rise">
+      <div class="side"><div class="side-label">Contact</div></div>
+      <div class="body">
+        <dl class="def">
+          <dt>Email</dt>
+          <dd><a href="mailto:soyeonlim.work@gmail.com">soyeonlim.work@gmail.com</a></dd>
+        </dl>
+        <dl class="def">
+          <dt>LinkedIn</dt>
+          <dd><a href="https://www.linkedin.com/in/soyeon-lim" target="_blank" rel="noopener">soyeon-lim</a></dd>
+        </dl>
+        <dl class="def">
+          <dt>Instagram</dt>
+          <dd>soyeonlimwork</dd>
+        </dl>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="col">© 2026 Soyeon Lim<br>All Rights Reserved</div>
+    <div class="col">
+      <a href="mailto:soyeonlim.work@gmail.com">Email</a><br>
+      <a href="https://www.linkedin.com/in/soyeon-lim" target="_blank" rel="noopener">LinkedIn</a><br>
+      Instagram
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* one entry per project; "name" = Projects-page title (image file name) */
+  var PROJECTS = {"bricklock": {"name": "Bricklock", "year": "2025", "scope": "BI, Package Design"}, "kakaobank-interviewer-kit": {"name": "Kakaobank Interviewer Kit", "year": "2026", "scope": "Package, Editorial Design"}, "kakaobank-buddy-buddy-kit": {"name": "Kakaobank Buddy Buddy Kit", "year": "2026", "scope": "Package, Editorial Design"}, "lucky-express": {"name": "Lucky Express", "year": "2025", "scope": "Branding, Character Design, Product Design"}, "green-light": {"name": "Green Light", "year": "2023", "scope": "Campaign Branding BI, Editorial Design"}, "kakaobank-aa-day": {"name": "Kakaobank AA Day Intro Video", "year": "2026", "scope": "Motion Design"}, "clothing-for-the-earth": {"name": "Clothing for the earth", "year": "2024", "scope": "3D Motion Graphic Design, Speculative Design"}, "hana-financial-group": {"name": "Hana Financial Group Contents Design", "year": "2024", "scope": "Contents Design"}, "olympicar-2090": {"name": "Olympicar 2090", "year": "2024", "scope": "Exhibition Branding, Editorial Design"}, "climate-refugees": {"name": "The Land of Climate Refugees", "year": "2024", "scope": "Package Design, Editorial Design, Speculative Design"}, "nura": {"name": "Nura", "year": "2026", "scope": "Branding, Product Design, Package Design"}, "brickglo": {"name": "Brickglo", "year": "2025", "scope": "Photo Direction"}, "frante": {"name": "Frante Contents Design Zip", "year": "2025", "scope": "Contents Design"}};
+  var THUMBS = {"bricklock": "images-2/thumb-bricklock.jpg", "kakaobank-interviewer-kit": "images-2/thumb-kakaobank-interviewer-kit.jpg", "kakaobank-buddy-buddy-kit": "images-2/thumb-kakaobank-buddy-buddy-kit.jpg", "lucky-express": "images-2/thumb-lucky-express.jpg", "green-light": "images-2/thumb-green-light.jpg", "kakaobank-aa-day": "images-2/thumb-kakaobank-aa-day.jpg", "clothing-for-the-earth": "images-2/thumb-clothing-for-the-earth.jpg", "hana-financial-group": "images-2/thumb-hana-financial-group.jpg", "olympicar-2090": "images-2/thumb-olympicar-2090.jpg", "climate-refugees": "images-2/thumb-climate-refugees.jpg", "nura": "images-2/thumb-nura.jpg", "brickglo": "images-2/thumb-brickglo.jpg", "frante": "images-2/thumb-frante.jpg"};
+  /* Projects page order */
+  var GRID_ORDER = ["lucky-express", "kakaobank-buddy-buddy-kit", "kakaobank-interviewer-kit", "bricklock", "hana-financial-group", "kakaobank-aa-day", "clothing-for-the-earth", "green-light", "olympicar-2090", "climate-refugees", "brickglo", "frante", "nura"];
+  /* Home list order + titles */
+  var INDEX_LIST = [{"slug": "kakaobank-interviewer-kit", "title": "Kakaobank Interviewer Kit"}, {"slug": "kakaobank-buddy-buddy-kit", "title": "Kakaobank Buddy Buddy Kit"}, {"slug": "kakaobank-aa-day", "title": "Kakaobank AA Day Intro Video"}, {"slug": "bricklock", "title": "Bricklock"}, {"slug": "brickglo", "title": "Brickglo"}, {"slug": "frante", "title": "Frante Contents Design Zip"}, {"slug": "hana-financial-group", "title": "Hana Fn SNS Contents Design Zip"}, {"slug": "clothing-for-the-earth", "title": "Clothing for the Earth"}, {"slug": "climate-refugees", "title": "Islet of Climate Refugees"}, {"slug": "nura", "title": "Nura"}, {"slug": "olympicar-2090", "title": "Olympicar 2090"}, {"slug": "green-light", "title": "Green Light"}, {"slug": "lucky-express", "title": "Lucky Express"}];
+
+  /* projects grid */
+  var grid = document.getElementById("project-grid");
+  GRID_ORDER.forEach(function(slug){
+    var p = PROJECTS[slug];
+    var a = document.createElement("a");
+    a.className = "card";
+    a.href = "#/projects/" + slug;
+    a.innerHTML =
+      '<div class="ph"><img src="' + THUMBS[slug] + '" alt="' + p.name + '" width="2146" height="1209" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>' +
+      '<div class="card-text">' +
+        '<div class="card-title">' + p.name + '</div>' +
+        '<div class="card-desc">' + p.year + ', ' + p.scope + '</div>' +
+      '</div>';
+    grid.appendChild(a);
+  });
+
+  /* home index */
+  var idx = document.getElementById("home-index");
+  INDEX_LIST.forEach(function(item){
+    var p = PROJECTS[item.slug];
+    var a = document.createElement("a");
+    a.className = "index-row";
+    a.href = "#/projects/" + item.slug;
+    a.innerHTML = item.title +
+                  ' <span class="desc">+ ' + p.year + ', ' + p.scope + '</span>';
+    idx.appendChild(a);
+  });
+
+  /* align Contact's left edge with the start of the "Projects" label */
+  function alignContact(){
+    var pj = document.querySelector('.nav a[data-nav="/projects"]');
+    var wrap = document.querySelector('.header .wrap');
+    if(!pj || !wrap) return;
+    var padL = parseFloat(getComputedStyle(wrap).paddingLeft) || 0;
+    var x = pj.getBoundingClientRect().left - wrap.getBoundingClientRect().left - padL;
+    document.documentElement.style.setProperty('--contact-x', x.toFixed(2) + 'px');
+    /* one image radius for the whole site: 11/1402 of the home image width */
+    var contentW = wrap.clientWidth - padL - (parseFloat(getComputedStyle(wrap).paddingRight) || 0);
+    var imgW = window.innerWidth <= 900 ? contentW : contentW - x;
+    document.documentElement.style.setProperty('--img-r', (imgW * 0.00785).toFixed(2) + 'px');
+  }
+  alignContact();
+  window.addEventListener('resize', alignContact);
+  window.addEventListener('load', alignContact);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(alignContact);
+
+  /* placeholder links (href="#") stay put until a real URL is added */
+  document.querySelectorAll('a[href="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); });
+  });
+
+  /* routing */
+  var pages = document.querySelectorAll(".page");
+  var navs = document.querySelectorAll("[data-nav]");
+  function route(){
+    var hash = location.hash.replace("#","") || "/";
+    if(!document.getElementById("page-" + hash)) hash = "/";
+    pages.forEach(function(p){ p.classList.toggle("is-active", p.id === "page-" + hash); });
+    navs.forEach(function(n){ n.classList.toggle("is-active", n.getAttribute("data-nav") === hash); });
+    document.title = (hash === "/" ? "Soyeon Lim Design Studio — Brand Design & Visual Design"
+                    : hash === "/projects" ? "Projects — Soyeon Lim Design Studio"
+                    : hash.indexOf("/projects/") === 0
+                      ? ((document.getElementById("page-" + hash) || document.createElement("div")).querySelector(".proj-title") || {}).textContent + " — Soyeon Lim Design Studio"
+                    : "Profile — Soyeon Lim Design Studio");
+    window.scrollTo(0,0);
+    reveal();
+  }
+  window.addEventListener("hashchange", route);
+
+  /* scroll reveal */
+  var io = null;
+  if("IntersectionObserver" in window){
+    io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {rootMargin:"0px 0px -8% 0px"});
+  }
+  function reveal(){
+    var els = document.querySelectorAll(".page.is-active .rise:not(.in)");
+    els.forEach(function(el){ io ? io.observe(el) : el.classList.add("in"); });
+  }
+
+
+
+  route();
+})();
+</script>
+</body>
+</html>
